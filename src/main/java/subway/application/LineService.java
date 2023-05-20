@@ -8,6 +8,7 @@ import subway.domain.SectionRepository;
 import subway.domain.Sections;
 import subway.domain.Station;
 import subway.domain.path.DirectedPathFinder;
+import subway.domain.path.PathFinder;
 import subway.dto.LineRequest;
 import subway.dto.LineResponse;
 import subway.exception.ErrorType;
@@ -57,7 +58,7 @@ public class LineService {
         if (sections.isEmpty()) {
             return List.of();
         }
-        DirectedPathFinder pathFinder = DirectedPathFinder.of(sections);
+        PathFinder pathFinder = DirectedPathFinder.of(sections);
         return pathFinder.getPath(sections.getFirstUpStation(), sections.getLastDownStation());
     }
 

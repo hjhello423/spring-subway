@@ -1,5 +1,6 @@
 package subway.ui;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ public class SectionController {
                                                          @RequestBody @Valid SectionRequest request) {
         SectionResponse response = sectionService.createSection(lineId, request);
         return ResponseEntity.created(URI.create("/lines/" + response.getId()))
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
 

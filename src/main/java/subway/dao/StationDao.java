@@ -8,13 +8,14 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import subway.domain.Station;
+import subway.domain.StationRepository;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class StationDao extends NamedParameterJdbcDaoSupport {
+public class StationDao extends NamedParameterJdbcDaoSupport implements StationRepository {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert insertAction;
 
@@ -33,28 +34,33 @@ public class StationDao extends NamedParameterJdbcDaoSupport {
                 .usingGeneratedKeyColumns("id");
     }
 
+    @Override
     public Station insert(Station station) {
         SqlParameterSource params = new BeanPropertySqlParameterSource(station);
         Long id = insertAction.executeAndReturnKey(params).longValue();
         return new Station(id, station.getName());
     }
 
+    @Override
     public List<Station> findAll() {
         String sql = "select * from STATION";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+    @Override
     public Optional<Station> findById(Long id) {
         String sql = "select * from STATION where id = ?";
         Station station = jdbcTemplate.query(sql, rs -> rs.next() ? rowMapper.mapRow(rs, 1) : null, id);
         return Optional.ofNullable(station);
     }
 
+    @Override
     public void update(Station newStation) {
         String sql = "update STATION set name = ? where id = ?";
         jdbcTemplate.update(sql, new Object[]{newStation.getName(), newStation.getId()});
     }
 
+    @Override
     public void deleteById(Long id) {
         String sql = "delete from STATION where id = ?";
         jdbcTemplate.update(sql, id);

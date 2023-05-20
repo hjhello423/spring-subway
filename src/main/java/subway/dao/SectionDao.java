@@ -71,6 +71,28 @@ public class SectionDao extends NamedParameterJdbcDaoSupport implements SectionR
     }
 
     @Override
+    public Sections findAll() {
+        String query = String.format("SELECT " +
+                "       s.id   AS section_id," +
+                "       s.line_id   AS line_id," +
+                "       d.id   AS down_station_id," +
+                "       d.name AS down_station_name," +
+                "       u.id   AS up_station_id," +
+                "       u.name AS up_station_name," +
+                "       s.distance" +
+                " FROM SECTION s " +
+                "         INNER JOIN STATION d ON s.down_station_id = d.id" +
+                "         INNER JOIN STATION u ON s.up_station_id = u.id");
+        List<Section> sections = getNamedParameterJdbcTemplate().query(query, ROW_MAPPER);
+
+        if (CollectionUtils.isEmpty(sections)) {
+            return new Sections();
+        }
+
+        return new Sections(sections);
+    }
+
+    @Override
     public void deleteByLineIdAndDownStationId(long lineId, long stationId) {
         String query = String.format("DELETE FROM %s WHERE line_id = :lineId AND down_station_id = :stationId",
                 TABLE_NAME);

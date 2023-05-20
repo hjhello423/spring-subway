@@ -14,7 +14,7 @@ import subway.exception.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectedPathFinder {
+public class DirectedPathFinder implements PathFinder {
 
     private static final int FIRST_INDEX = 0;
 
@@ -42,6 +42,7 @@ public class DirectedPathFinder {
         graph.addEdge(upStation, downStation);
     }
 
+    @Override
     public List<Station> getPath(Station source, Station destination) {
         List<GraphPath<Station, DefaultEdge>> allPaths = paths.getAllPaths(source, destination, true, null);
 
