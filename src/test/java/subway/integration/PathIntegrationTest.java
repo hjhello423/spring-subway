@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static subway.integration.LineStep.BG_RED_600;
 import static subway.integration.LineStep.노선_생성_api_응답변환;
 import static subway.integration.PathStep.경로_응답_검증;
@@ -54,11 +56,12 @@ public class PathIntegrationTest extends IntegrationTest {
     void getLine() {
         // given
         int expectedDistance = 35;
+        BigDecimal expectedFare = BigDecimal.valueOf(1750);
 
         // when
         ExtractableResponse<Response> extractableResponse = 경로_조회_api(교대역, 판교역);
 
         // then
-        경로_응답_검증(extractableResponse, expectedDistance);
+        경로_응답_검증(extractableResponse, expectedDistance, expectedFare);
     }
 }

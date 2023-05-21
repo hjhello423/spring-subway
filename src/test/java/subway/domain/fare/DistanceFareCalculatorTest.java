@@ -47,8 +47,6 @@ class DistanceFareCalculatorTest {
         Fare fare = strategy.calculate(distance);
 
         // then
-        System.out.println("fare = " + fare.getValue());
-        System.out.println("addFare = " + addFare);
         assertThat(fare).isEqualTo(Fare.of(addFare));
     }
 

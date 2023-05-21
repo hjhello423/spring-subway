@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 import static subway.domain.fare.DistanceFarePolicy.SECTION1;
 import static subway.domain.fare.DistanceFarePolicy.SECTION2;
 
-public class DistanceFareCalculator {
+public class DistanceFareCalculator implements FareCalculator{
 
+    @Override
     public Fare calculate(int distance) {
         Fare fare = Fare.BASIC_FARE;
         if (distance <= SECTION1.getStart()) {

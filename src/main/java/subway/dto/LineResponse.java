@@ -3,6 +3,7 @@ package subway.dto;
 import subway.domain.Line;
 import subway.domain.Sections;
 import subway.domain.Station;
+import subway.domain.path.Path;
 
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +50,18 @@ public class LineResponse {
         LineResponse response = new LineResponse(line.getId(), line.getName(), line.getColor());
 
         List<StationResponse> stationResponses = sortStation.stream()
+                .map(StationResponse::of)
+                .collect(Collectors.toList());
+        response.stations = stationResponses;
+
+        return response;
+    }
+
+    public static LineResponse of(Line line, Path path) {
+        LineResponse response = new LineResponse(line.getId(), line.getName(), line.getColor());
+        List<Station> stations = path.getStations();
+
+        List<StationResponse> stationResponses = stations.stream()
                 .map(StationResponse::of)
                 .collect(Collectors.toList());
         response.stations = stationResponses;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import subway.dto.PathResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,14 +30,15 @@ public final class PathStep {
                 extract();
     }
 
-    public static void 경로_응답_검증(ExtractableResponse<Response> extractableResponse, int distance) {
+    public static void 경로_응답_검증(ExtractableResponse<Response> extractableResponse, int distance, BigDecimal fare) {
         PathResponse response = extractableResponse.as(PathResponse.class);
         List<String> names = response.getStations()
                 .stream().map(station -> station.getName())
                 .collect(Collectors.toList());
 
         assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getDistance()).isEqualTo(35);
+        assertThat(response.getDistance()).isEqualTo(distance);
+        assertThat(response.getFare()).isEqualTo(fare);
         assertThat(names).containsExactly(교대역, 강남역, 양재역, 판교역);
     }
 

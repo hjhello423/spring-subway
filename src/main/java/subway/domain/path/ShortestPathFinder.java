@@ -64,47 +64,4 @@ public class ShortestPathFinder {
         }
     }
 
-//    public static ShortestPathFinder of(List<Line> lines) {
-//        ShortestPathFinder pathChecker = new ShortestPathFinder();
-//        pathChecker.initGraph(lines);
-//
-//        return pathChecker;
-//    }
-//
-//    @Override
-//    public List<Station> getPath(Station source, Station target) {
-//        validatePath(source, target);
-//        GraphPath<Station, DefaultWeightedEdge> path = dijkstraShortestPath.getPath(source, target);
-//
-//        if (Objects.isNull(path)) {
-//            throw new ServiceException(ErrorType.NOT_FOUND_PATH);
-//        }
-//
-//        return path.getVertexList();
-//    }
-//
-//    private void initGraph(List<Line> lines) {
-//        lines.forEach(this::initVertex);
-//        lines.forEach(this::initEdgeWeight);
-//    }
-//
-//    private void initVertex(Line line) {
-//        Sections sections = line.getSections();
-//        List<Station> stations = sections.getAllStation();
-//        stations.forEach(graph::addVertex);
-//    }
-//
-//    private void initEdgeWeight(Line line) {
-//        List<Section> sections = line.sections();
-//        sections.stream()
-//                .forEach(it -> graph.setEdgeWeight(
-//                        graph.addEdge(it.getUpStation(), it.getDownStation()), it.getDistance()));
-//    }
-//
-//    private void validatePath(Station source, Station target) {
-//        if (Objects.equals(source, target)) {
-//            throw new ServiceException(ErrorType.SAME_SOURCE_DESTINATION_STATION);
-//        }
-//    }
-
 }

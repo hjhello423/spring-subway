@@ -1,12 +1,16 @@
 package subway.application;
 
 import org.springframework.stereotype.Service;
+import subway.domain.Distance;
 import subway.domain.Line;
 import subway.domain.LineRepository;
 import subway.domain.SectionRepository;
 import subway.domain.Sections;
 import subway.domain.Station;
 import subway.domain.StationRepository;
+import subway.domain.fare.DistanceFareCalculator;
+import subway.domain.fare.Fare;
+import subway.domain.fare.FareCalculator;
 import subway.domain.path.Path;
 import subway.domain.path.ShortestPathFinder;
 import subway.dto.PathResponse;
@@ -36,7 +40,13 @@ public class PathService {
         ShortestPathFinder pathFinder = ShortestPathFinder.of(findAllSections());
         Path path = pathFinder.getPath(sourceStation, destinationStation);
 
-        return PathResponse.of(path);
+        return PathResponse.of(path, calculateFare(path));
+    }
+
+    private Fare calculateFare(Path path) {
+        Distance distance = path.getDistance();
+        FareCalculator fareCalculator = new DistanceFareCalculator();
+        return fareCalculator.calculate(distance.getValue());
     }
 
     private Sections findAllSection() {

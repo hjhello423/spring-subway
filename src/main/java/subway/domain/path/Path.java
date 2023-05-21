@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Path {
 
+    public static final Path NONE = new Path(List.of(), Distance.ZERO);
+
     private List<Station> stations;
     private Distance distance;
 
