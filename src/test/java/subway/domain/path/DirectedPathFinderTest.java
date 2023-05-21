@@ -2,6 +2,7 @@ package subway.domain.path;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import subway.domain.Distance;
 import subway.domain.Section;
 import subway.domain.Sections;
 import subway.domain.Station;
@@ -28,23 +29,27 @@ class DirectedPathFinderTest {
         Section section1 = Section.builder()
                 .upStation(판교)
                 .downStation(정자)
+                .distance(Distance.of(10))
                 .build();
         Section section2 = Section.builder()
                 .upStation(강남)
                 .downStation(판교)
+                .distance(Distance.of(10))
                 .build();
         Section section3 = Section.builder()
                 .upStation(정자)
                 .downStation(미금)
+                .distance(Distance.of(10))
                 .build();
 
         Sections sections = new Sections(List.of(section1, section2, section3));
 
         // when
         DirectedPathFinder finder = DirectedPathFinder.of(sections);
-        List<Station> path = finder.getPath(강남, 미금);
+        Path path = finder.getPath(강남, 미금);
 
         // then
-        assertThat(path).containsExactly(강남, 판교, 정자, 미금);
+        assertThat(path.getStations()).containsExactly(강남, 판교, 정자, 미금);
+        assertThat(path.getDistance().getValue()).isEqualTo(30);
     }
 }

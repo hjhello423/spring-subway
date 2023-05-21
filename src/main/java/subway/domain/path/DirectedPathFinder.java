@@ -5,6 +5,7 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import subway.domain.Distance;
 import subway.domain.Section;
 import subway.domain.Sections;
 import subway.domain.Station;
@@ -14,16 +15,19 @@ import subway.exception.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectedPathFinder {
+public class DirectedPathFinder implements PathFinder {
 
     private static final int FIRST_INDEX = 0;
 
     private final Graph<Station, DefaultEdge> graph;
     private final AllDirectedPaths<Station, DefaultEdge> paths;
 
+    private Distance distance;
+
     private DirectedPathFinder() {
         this.graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         this.paths = new AllDirectedPaths<>(graph);
+        this.distance = Distance.ZERO;
     }
 
     public static DirectedPathFinder of(Sections sections) {
@@ -40,9 +44,11 @@ public class DirectedPathFinder {
         graph.addVertex(upStation);
         graph.addVertex(downStation);
         graph.addEdge(upStation, downStation);
+        distance = distance.add(section.getDistance());
     }
 
-    public List<Station> getPath(Station source, Station destination) {
+    @Override
+    public Path getPath(Station source, Station destination) {
         List<GraphPath<Station, DefaultEdge>> allPaths = paths.getAllPaths(source, destination, true, null);
 
         if (allPaths.isEmpty()) {
@@ -54,7 +60,7 @@ public class DirectedPathFinder {
             orderedStations.add(station);
         }
 
-        return orderedStations;
+        return Path.of(orderedStations, distance);
     }
 
 }

@@ -5,6 +5,7 @@ import subway.exception.ServiceException;
 
 public class Distance {
 
+    public static final Distance ZERO = new Distance(0);
     private static final int MIN_DISTANCE = 0;
     private final int value;
 
@@ -15,6 +16,10 @@ public class Distance {
 
     public static Distance of(int distance) {
         return new Distance(distance);
+    }
+
+    public Distance add(int distance) {
+        return new Distance(this.value + distance);
     }
 
     private void validateDistance(int distance) {

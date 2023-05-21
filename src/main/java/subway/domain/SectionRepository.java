@@ -6,5 +6,7 @@ public interface SectionRepository {
 
     Sections findAllByLineId(long lineId);
 
+    Sections findAll();
+
     void deleteByLineIdAndDownStationId(long lineId, long stationId);
 }
